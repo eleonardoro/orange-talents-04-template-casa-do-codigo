@@ -8,11 +8,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import br.com.zup.proposta.validacoes.CpfOuCnpj;
+import br.com.zup.proposta.validacoes.ValorUnico;
 
 class CriaPropostaRequest {
 
 	@NotEmpty
 	@CpfOuCnpj
+	@ValorUnico(classe = Proposta.class, atributo = "documento")
 	private String documento;
 
 	@NotEmpty
