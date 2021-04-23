@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.Type;
@@ -30,6 +32,9 @@ public class Proposta {
 
 	@Column(nullable = false)
 	private BigDecimal salario;
+	
+	@Enumerated(EnumType.STRING)
+	private EstadoDaProposta estadoDaProposta;
 
 	@Deprecated
 	public Proposta() {
@@ -66,5 +71,13 @@ public class Proposta {
 
 	public BigDecimal getSalario() {
 		return salario;
+	}
+	
+	public EstadoDaProposta getEstadoDaProposta() {
+		return estadoDaProposta;
+	}
+
+	public void setEstadoDaProposta(String estado) {
+		this.estadoDaProposta = estado.equals("SEM_RESTRICAO") ? EstadoDaProposta.ELEGIVEL : EstadoDaProposta.NAO_ELEGIVEL;
 	}
 }

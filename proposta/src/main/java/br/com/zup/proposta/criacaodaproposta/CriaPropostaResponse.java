@@ -10,6 +10,7 @@ public class CriaPropostaResponse {
 	private String nome;
 	private String endereco;
 	private BigDecimal salario;
+	private String estadoDaProposta;
 
 	public CriaPropostaResponse(Proposta proposta) {
 		this.id = proposta.getId();
@@ -18,6 +19,7 @@ public class CriaPropostaResponse {
 		this.nome = proposta.getNome();
 		this.endereco = proposta.getEndereco();
 		this.salario = proposta.getSalario();
+		this.estadoDaProposta = proposta.getEstadoDaProposta().toString();
 	}
 
 	public UUID getId() {
@@ -43,5 +45,8 @@ public class CriaPropostaResponse {
 	public BigDecimal getSalario() {
 		return salario;
 	}
-
+	
+	public String getEstadoDaProposta() {
+		return estadoDaProposta;
+	}
 }
