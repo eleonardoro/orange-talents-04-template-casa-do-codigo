@@ -1,13 +1,13 @@
 package br.com.zup.proposta.criacaodaproposta.analise;
 
-public class RequisitaAnaliseResponse {
+public class SolicitacaoDeAnaliseResponse {
 
 	private String documento;
 	private String nome;
 	private String resultadoSolicitacao;
 	private String idProposta;
 
-	public RequisitaAnaliseResponse(String documento, String nome, String resultadoSolicitacao, String idProposta) {
+	public SolicitacaoDeAnaliseResponse(String documento, String nome, String resultadoSolicitacao, String idProposta) {
 		this.documento = documento;
 		this.nome = nome;
 		this.resultadoSolicitacao = resultadoSolicitacao;

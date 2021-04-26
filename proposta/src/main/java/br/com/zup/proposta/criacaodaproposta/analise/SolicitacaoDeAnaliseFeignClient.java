@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface SolicitacaoDeAnaliseFeignClient {
 
 	@PostMapping(value = "${path.analise.proposta}", consumes = "application/json")
-	RequisitaAnaliseResponse solicitaAnalise(@RequestBody RequisitaAnaliseRequest requisita);
+	SolicitacaoDeAnaliseResponse solicitaAnalise(@RequestBody SolicitacaoDeAnaliseRequest requisita);
 }

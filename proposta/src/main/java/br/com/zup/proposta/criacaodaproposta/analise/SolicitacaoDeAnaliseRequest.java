@@ -2,13 +2,13 @@ package br.com.zup.proposta.criacaodaproposta.analise;
 
 import br.com.zup.proposta.criacaodaproposta.Proposta;
 
-public class RequisitaAnaliseRequest {
+public class SolicitacaoDeAnaliseRequest {
 
 	private String documento;
 	private String nome;
 	private String idProposta;
 
-	public RequisitaAnaliseRequest(Proposta proposta) {
+	public SolicitacaoDeAnaliseRequest(Proposta proposta) {
 		this.documento = proposta.getDocumento();
 		this.nome = proposta.getNome();
 		this.idProposta = proposta.getId().toString();

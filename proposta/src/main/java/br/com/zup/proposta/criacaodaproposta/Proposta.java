@@ -8,8 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Type;
+
+import br.com.zup.proposta.criacaodocartao.Cartao;
 
 @Entity
 public class Proposta {
@@ -32,7 +35,10 @@ public class Proposta {
 
 	@Column(nullable = false)
 	private BigDecimal salario;
-	
+
+	@OneToOne(mappedBy = "proposta")
+	Cartao cartao;
+
 	@Enumerated(EnumType.STRING)
 	private EstadoDaProposta estadoDaProposta;
 
@@ -41,7 +47,6 @@ public class Proposta {
 	}
 
 	public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario) {
-		super();
 		this.documento = documento;
 		this.email = email;
 		this.nome = nome;
@@ -72,12 +77,21 @@ public class Proposta {
 	public BigDecimal getSalario() {
 		return salario;
 	}
-	
+
 	public EstadoDaProposta getEstadoDaProposta() {
 		return estadoDaProposta;
 	}
 
 	public void setEstadoDaProposta(String estado) {
-		this.estadoDaProposta = estado.equals("SEM_RESTRICAO") ? EstadoDaProposta.ELEGIVEL : EstadoDaProposta.NAO_ELEGIVEL;
+		this.estadoDaProposta = estado.equals("SEM_RESTRICAO") ? EstadoDaProposta.ELEGIVEL
+				: EstadoDaProposta.NAO_ELEGIVEL;
+	}
+
+	public void setEstadoDaProposta(EstadoDaProposta estadoDaProposta) {
+		this.estadoDaProposta = estadoDaProposta;
+	}
+
+	public void setCartao(Cartao cartao) {
+		this.cartao = cartao;
 	}
 }
