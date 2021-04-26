@@ -37,7 +37,7 @@ public class Proposta {
 	private BigDecimal salario;
 
 	@OneToOne(mappedBy = "proposta")
-	Cartao cartao;
+	private Cartao cartao;
 
 	@Enumerated(EnumType.STRING)
 	private EstadoDaProposta estadoDaProposta;
@@ -76,6 +76,10 @@ public class Proposta {
 
 	public BigDecimal getSalario() {
 		return salario;
+	}
+
+	public Cartao getCartao() {
+		return cartao;
 	}
 
 	public EstadoDaProposta getEstadoDaProposta() {

@@ -36,7 +36,7 @@ public class Cartao {
 
 	@Column(nullable = false)
 	private Integer limite;
-	
+
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "proposta_id", referencedColumnName = "id")
 	Proposta proposta;
@@ -73,13 +73,26 @@ public class Cartao {
 		this.parcelas = parcelas;
 	}
 
-	public Cartao(String id, String idProposta, LocalDateTime emitidoEm, String titular, Integer limite, Proposta proposta) {
+	public Cartao(String id, String idProposta, LocalDateTime emitidoEm, String titular, Integer limite,
+			Proposta proposta) {
 		this.id = id;
 		this.idProposta = idProposta;
 		this.emitidoEm = emitidoEm;
 		this.titular = titular;
 		this.limite = limite;
 		this.proposta = proposta;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public LocalDateTime getEmitidoEm() {
+		return emitidoEm;
+	}
+
+	public Integer getLimite() {
+		return limite;
 	}
 
 }
