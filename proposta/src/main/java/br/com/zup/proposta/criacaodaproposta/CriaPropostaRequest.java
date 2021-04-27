@@ -33,7 +33,6 @@ class CriaPropostaRequest {
 
 	public CriaPropostaRequest(@NotEmpty String documento, @NotEmpty @Email String email, @NotEmpty String nome,
 			@NotEmpty String endereco, @NotNull @Positive BigDecimal salario) {
-		super();
 		this.documento = documento;
 		this.email = email;
 		this.nome = nome;
