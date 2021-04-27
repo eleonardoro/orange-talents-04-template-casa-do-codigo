@@ -44,4 +44,5 @@ class CriaPropostaRequest {
 	Proposta converterParaProposta() {
 		return new Proposta(documento, email, nome, endereco, salario);
 	}
+
 }

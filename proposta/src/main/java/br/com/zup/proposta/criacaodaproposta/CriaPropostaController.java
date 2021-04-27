@@ -13,8 +13,6 @@ import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseFeignCl
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseRequest;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseResponse;
 import br.com.zup.proposta.criacaodocartao.CriacaoDoCartaoFeignClient;
-import br.com.zup.proposta.criacaodocartao.CriacaoDoCartaoRequest;
-import br.com.zup.proposta.criacaodocartao.CriacaoDoCartaoResponse;
 
 @RestController
 @RequestMapping("/propostas")
@@ -50,7 +48,7 @@ class CriaPropostaController {
 		} catch (Exception e) {
 			proposta.setEstadoDaProposta(EstadoDaProposta.NAO_ELEGIVEL);
 			propostaRepository.save(proposta);
-			
+
 			return ResponseEntity.badRequest().build();
 		}
 	}

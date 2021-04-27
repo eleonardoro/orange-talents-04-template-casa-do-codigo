@@ -1,6 +1,7 @@
 package br.com.zup.proposta.criacaodaproposta;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -41,6 +42,9 @@ public class Proposta {
 
 	@Enumerated(EnumType.STRING)
 	private EstadoDaProposta estadoDaProposta;
+	
+	@Column(nullable = false, updatable = false)
+	private final LocalDateTime dataCriacao = LocalDateTime.now();
 
 	@Deprecated
 	public Proposta() {
