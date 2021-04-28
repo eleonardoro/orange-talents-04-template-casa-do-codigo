@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.zup.proposta.cartao.criacaodocartao.CriacaoDoCartaoFeignClient;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseFeignClient;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseRequest;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseResponse;
@@ -20,14 +19,11 @@ class CriaPropostaController {
 
 	private PropostaRepository propostaRepository;
 	private SolicitacaoDeAnaliseFeignClient solicitacaoDeAnaliseClient;
-	private CriacaoDoCartaoFeignClient criacaoDoCartaoFeignClient;
 
 	public CriaPropostaController(PropostaRepository propostaRepository,
-			SolicitacaoDeAnaliseFeignClient solicitacaoDeAnaliseClient,
-			CriacaoDoCartaoFeignClient criacaoDoCartaoFeignClient) {
+			SolicitacaoDeAnaliseFeignClient solicitacaoDeAnaliseClient) {
 		this.propostaRepository = propostaRepository;
 		this.solicitacaoDeAnaliseClient = solicitacaoDeAnaliseClient;
-		this.criacaoDoCartaoFeignClient = criacaoDoCartaoFeignClient;
 	}
 
 	@PostMapping
