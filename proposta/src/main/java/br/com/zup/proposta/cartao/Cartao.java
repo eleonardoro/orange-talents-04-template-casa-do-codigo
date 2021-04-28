@@ -28,9 +28,6 @@ public class Cartao {
 	private String id;
 
 	@Column(nullable = false)
-	private String idProposta;
-
-	@Column(nullable = false)
 	private LocalDateTime emitidoEm;
 
 	@Column(nullable = false)
@@ -65,10 +62,9 @@ public class Cartao {
 	public Cartao() {
 	}
 
-	public Cartao(String id, String idProposta, LocalDateTime emitidoEm, String titular, Integer limite,
-			List<Bloqueio> bloqueios, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas) {
+	public Cartao(String id, LocalDateTime emitidoEm, String titular, Integer limite, List<Bloqueio> bloqueios,
+			List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas) {
 		this.id = id;
-		this.idProposta = idProposta;
 		this.emitidoEm = emitidoEm;
 		this.titular = titular;
 		this.limite = limite;
@@ -78,10 +74,8 @@ public class Cartao {
 		this.parcelas = parcelas;
 	}
 
-	public Cartao(String id, String idProposta, LocalDateTime emitidoEm, String titular, Integer limite,
-			Proposta proposta) {
+	public Cartao(String id, LocalDateTime emitidoEm, String titular, Integer limite, Proposta proposta) {
 		this.id = id;
-		this.idProposta = idProposta;
 		this.emitidoEm = emitidoEm;
 		this.titular = titular;
 		this.limite = limite;

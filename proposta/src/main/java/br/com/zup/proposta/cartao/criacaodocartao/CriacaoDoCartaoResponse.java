@@ -52,7 +52,7 @@ public class CriacaoDoCartaoResponse {
 	}
 
 	Cartao converterParaCartao(Proposta proposta) {
-		return new Cartao(id, idProposta, emitidoEm, titular, limite, proposta);
+		return new Cartao(id, emitidoEm, titular, limite, proposta);
 	}
 
 	VencimentoResponse getVencimentoResponse() {

@@ -160,6 +160,8 @@ services:
         POSTGRES_PASSWORD: password
         ANALISE_PROPOSTA_URL: http://analise:9999
         ANALISE_PROPOSTA_PATH: /api/solicitacao
+        BLOQUEIO_CARTAO_URL: http://localhost:8888
+        BLOQUEIO_CARTAO_PATH: /api/cartoes/{id}/bloqueios
         ANALISE_PROPOSTA_PATH_HEALTHCHECK: /actuator/health
         CRIACAO_DO_CARTAO_URL: http://contas:8888
         CRIACAO_DO_CARTAO_PATH: /api/cartoes

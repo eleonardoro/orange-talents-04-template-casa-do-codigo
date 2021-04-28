@@ -16,6 +16,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.cartao.CartaoRespository;
 import br.com.zup.proposta.cartao.SituacaoDoCartao;
+import br.com.zup.proposta.cartao.bloqueiodecartao.requisicao.SolicitacaoDeBloqueioFeignClient;
+import br.com.zup.proposta.cartao.bloqueiodecartao.requisicao.SolicitacaoDeBloqueioRequest;
 
 @RestController
 @RequestMapping("/cartoes/bloqueio")
@@ -23,11 +25,13 @@ public class BloqueioDeCartaoController {
 
 	BloqueioDeCartaoRepository bloqueioDeCartaoRepository;
 	CartaoRespository cartaoRespository;
+	SolicitacaoDeBloqueioFeignClient solicitacaoDeBloqueioFeignClient;
 
 	public BloqueioDeCartaoController(BloqueioDeCartaoRepository bloqueioDeCartaoRepository,
-			CartaoRespository cartaoRespository) {
+			CartaoRespository cartaoRespository, SolicitacaoDeBloqueioFeignClient solicitacaoDeBloqueioFeignClient) {
 		this.bloqueioDeCartaoRepository = bloqueioDeCartaoRepository;
 		this.cartaoRespository = cartaoRespository;
+		this.solicitacaoDeBloqueioFeignClient = solicitacaoDeBloqueioFeignClient;
 	}
 
 	@PostMapping(value = "/{id}")
@@ -43,11 +47,19 @@ public class BloqueioDeCartaoController {
 		if (cartao.get().getSituacaoDoCartao() == SituacaoDoCartao.BLOQUEADO)
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 
-		cartao.get().bloqueiaCartao();
-		cartaoRespository.save(cartao.get());
+		try {
+			solicitacaoDeBloqueioFeignClient.solicitaBloqueio(new SolicitacaoDeBloqueioRequest(userAgent), idCartao);
 
-		bloqueioDeCartaoRepository.save(new BloqueioDeCartao(request.getRemoteAddr(), userAgent, cartao.get()));
+			cartao.get().bloqueiaCartao();
+			cartaoRespository.save(cartao.get());
 
-		return ResponseEntity.ok().build();
+			bloqueioDeCartaoRepository.save(new BloqueioDeCartao(request.getRemoteAddr(), userAgent, cartao.get()));
+
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(
+					"{erro: Aconteceu algum erro ao bloquear o cartão no sistema legado. Tente novamente em instantes.}");
+		}
 	}
 }
