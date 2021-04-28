@@ -1,4 +1,4 @@
-package br.com.zup.proposta.criacaodocartao;
+package br.com.zup.proposta.cartao;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,17 +7,19 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import br.com.zup.proposta.cartao.criacaodocartao.aviso.Aviso;
+import br.com.zup.proposta.cartao.criacaodocartao.bloqueio.Bloqueio;
+import br.com.zup.proposta.cartao.criacaodocartao.carteira.Carteira;
+import br.com.zup.proposta.cartao.criacaodocartao.parcela.Parcela;
+import br.com.zup.proposta.cartao.criacaodocartao.renegociacao.Renegociacao;
 import br.com.zup.proposta.criacaodaproposta.Proposta;
-import br.com.zup.proposta.criacaodocartao.aviso.Aviso;
-import br.com.zup.proposta.criacaodocartao.bloqueio.Bloqueio;
-import br.com.zup.proposta.criacaodocartao.carteira.Carteira;
-import br.com.zup.proposta.criacaodocartao.parcela.Parcela;
-import br.com.zup.proposta.criacaodocartao.renegociacao.Renegociacao;
 
 @Entity
 public class Cartao {
@@ -55,6 +57,9 @@ public class Cartao {
 
 	@OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
 	private List<Parcela> parcelas = new ArrayList<>();
+
+	@Enumerated(EnumType.STRING)
+	private SituacaoDoCartao situacaoDoCartao = SituacaoDoCartao.DESBLOQUEADO;
 
 	@Deprecated
 	public Cartao() {
@@ -95,4 +100,11 @@ public class Cartao {
 		return limite;
 	}
 
+	public SituacaoDoCartao getSituacaoDoCartao() {
+		return situacaoDoCartao;
+	}
+
+	public void bloqueiaCartao() {
+		this.situacaoDoCartao = SituacaoDoCartao.BLOQUEADO;
+	}
 }

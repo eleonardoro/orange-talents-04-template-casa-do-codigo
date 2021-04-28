@@ -1,4 +1,4 @@
-package br.com.zup.proposta.criacaodocartao.vencimento;
+package br.com.zup.proposta.cartao.criacaodocartao.vencimento;
 
 import org.springframework.data.repository.CrudRepository;
 

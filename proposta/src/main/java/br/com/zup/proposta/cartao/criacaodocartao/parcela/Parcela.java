@@ -1,11 +1,11 @@
-package br.com.zup.proposta.criacaodocartao.parcela;
+package br.com.zup.proposta.cartao.criacaodocartao.parcela;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import br.com.zup.proposta.criacaodocartao.Cartao;
+import br.com.zup.proposta.cartao.Cartao;
 
 @Entity
 public class Parcela {

@@ -1,4 +1,4 @@
-package br.com.zup.proposta.criacaodocartao;
+package br.com.zup.proposta.cartao.criacaodocartao;
 
 import java.time.LocalDateTime;
 
@@ -7,8 +7,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.PositiveOrZero;
 
+import br.com.zup.proposta.cartao.Cartao;
+import br.com.zup.proposta.cartao.criacaodocartao.vencimento.VencimentoResponse;
 import br.com.zup.proposta.criacaodaproposta.Proposta;
-import br.com.zup.proposta.criacaodocartao.vencimento.VencimentoResponse;
 import br.com.zup.proposta.validacoes.ExisteId;
 
 public class CriacaoDoCartaoResponse {

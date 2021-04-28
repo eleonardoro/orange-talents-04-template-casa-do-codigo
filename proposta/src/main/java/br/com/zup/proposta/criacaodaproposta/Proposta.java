@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Type;
 
-import br.com.zup.proposta.criacaodocartao.Cartao;
+import br.com.zup.proposta.cartao.Cartao;
 
 @Entity
 public class Proposta {

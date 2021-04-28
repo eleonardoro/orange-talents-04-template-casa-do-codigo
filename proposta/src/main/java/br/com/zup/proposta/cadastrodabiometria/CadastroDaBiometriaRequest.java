@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import br.com.zup.proposta.criacaodocartao.Cartao;
+import br.com.zup.proposta.cartao.Cartao;
 
 public class CadastroDaBiometriaRequest {
 

@@ -1,4 +1,4 @@
-package br.com.zup.proposta.cadastrodabiometria;
+package br.com.zup.proposta.cartao.bloqueiodecartao;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -7,36 +7,35 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
 
 import br.com.zup.proposta.cartao.Cartao;
 
 @Entity
-public class Biometria {
+public class BloqueioDeCartao {
 
 	@Id
 	private UUID id = UUID.randomUUID();
 
 	@Column(nullable = false, updatable = false)
-	private byte[] biometria;
+	private LocalDateTime instanteDeBloqueio = LocalDateTime.now();
 
 	@Column(nullable = false, updatable = false)
-	private final LocalDateTime dataCriacao = LocalDateTime.now();
+	private String ip;
 
+	@Column(nullable = false, updatable = false)
+	private String userAgent;
+	
 	@ManyToOne
 	private Cartao cartao;
 
 	@Deprecated
-	public Biometria() {
+	public BloqueioDeCartao() {
 	}
 
-	public Biometria(@NotEmpty String biometria, Cartao cartao) {
-		this.biometria = biometria.getBytes();
+	public BloqueioDeCartao(String ip, String userAgent, Cartao cartao) {
+		this.ip = ip;
+		this.userAgent = userAgent;
 		this.cartao = cartao;
-	}
-
-	public UUID getId() {
-		return id;
 	}
 
 }

@@ -1,4 +1,4 @@
-package br.com.zup.proposta.criacaodocartao;
+package br.com.zup.proposta.cartao;
 
 import org.springframework.data.repository.CrudRepository;
 

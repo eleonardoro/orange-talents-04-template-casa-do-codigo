@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.zup.proposta.cartao.criacaodocartao.CriacaoDoCartaoFeignClient;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseFeignClient;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseRequest;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseResponse;
-import br.com.zup.proposta.criacaodocartao.CriacaoDoCartaoFeignClient;
 
 @RestController
 @RequestMapping("/propostas")

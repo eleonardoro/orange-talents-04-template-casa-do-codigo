@@ -1,4 +1,4 @@
-package br.com.zup.proposta.criacaodocartao.aviso;
+package br.com.zup.proposta.cartao.criacaodocartao.aviso;
 
 import java.time.LocalDate;
 
@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import br.com.zup.proposta.criacaodocartao.Cartao;
+import br.com.zup.proposta.cartao.Cartao;
 
 @Entity
 public class Aviso {

@@ -2,7 +2,7 @@ package br.com.zup.proposta.criacaodaproposta.acompanhamento;
 
 import java.time.LocalDateTime;
 
-import br.com.zup.proposta.criacaodocartao.Cartao;
+import br.com.zup.proposta.cartao.Cartao;
 
 public class AcompanhaPropostaCartaoResponse {
 	private String id;

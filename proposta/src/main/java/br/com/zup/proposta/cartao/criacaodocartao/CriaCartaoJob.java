@@ -1,4 +1,4 @@
-package br.com.zup.proposta.criacaodocartao;
+package br.com.zup.proposta.cartao.criacaodocartao;
 
 import java.util.List;
 
@@ -6,12 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import br.com.zup.proposta.cartao.Cartao;
+import br.com.zup.proposta.cartao.CartaoRespository;
+import br.com.zup.proposta.cartao.criacaodocartao.vencimento.Vencimento;
+import br.com.zup.proposta.cartao.criacaodocartao.vencimento.VencimentoRepository;
+import br.com.zup.proposta.cartao.criacaodocartao.vencimento.VencimentoResponse;
 import br.com.zup.proposta.criacaodaproposta.EstadoDaProposta;
 import br.com.zup.proposta.criacaodaproposta.Proposta;
 import br.com.zup.proposta.criacaodaproposta.PropostaRepository;
-import br.com.zup.proposta.criacaodocartao.vencimento.Vencimento;
-import br.com.zup.proposta.criacaodocartao.vencimento.VencimentoRepository;
-import br.com.zup.proposta.criacaodocartao.vencimento.VencimentoResponse;
 
 @Configuration
 @EnableScheduling

@@ -1,4 +1,4 @@
-package br.com.zup.proposta.criacaodocartao.bloqueio;
+package br.com.zup.proposta.cartao.criacaodocartao.bloqueio;
 
 import java.time.LocalDateTime;
 
@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import br.com.zup.proposta.criacaodocartao.Cartao;
+import br.com.zup.proposta.cartao.Cartao;
 
 @Entity
 public class Bloqueio {

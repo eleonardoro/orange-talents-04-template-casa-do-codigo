@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.zup.proposta.criacaodocartao.Cartao;
-import br.com.zup.proposta.criacaodocartao.CartaoRespository;
+import br.com.zup.proposta.cartao.Cartao;
+import br.com.zup.proposta.cartao.CartaoRespository;
 
 @RestController
 @RequestMapping("/cartoes/biometria")
