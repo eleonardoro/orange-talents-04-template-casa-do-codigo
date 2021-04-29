@@ -120,8 +120,8 @@ services:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-     - prometheus-volume:/etc/prometheus/
-    network_mode: bridge
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+      - prometheus-volume:/etc/prometheus/
     ports:
       - "9090:9090"
 
@@ -130,7 +130,6 @@ services:
     container_name: grafana
     volumes:
       - grafana-volume:/var/lib/grafana
-    network_mode: bridge
     ports:
       - "3000:3000"
     depends_on:
@@ -146,9 +145,9 @@ services:
       VAULT_TOKEN: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_ADDR: http://127.0.0.1:8200
 
-  cartao:
+  cartao-proposta:
       image: 'eleonardoro/cartao-proposta'
-      container_name: cartao
+      container_name: cartao-proposta
       ports:
         - 9596:9596
       depends_on:
@@ -168,6 +167,8 @@ services:
         DELAY_SOLICITACAO_CRIACAO_CARTAO: 60000
         KEYCLOAK_ISSUER_URI: http://localhost:18080/auth/realms/cartaoproposta
         KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/cartaoproposta/protocol/openid-connect/certs
+        NOME_DA_APLICACAO: ServicoDeProposta
+        AMBIENTE: Desenvolvimento
 
 volumes:
   grafana-volume:
