@@ -171,6 +171,8 @@ services:
         AMBIENTE: Desenvolvimento
         AVISO_DE_VIAGEM_CARTAO_URL: http://contas:8888
         AVISO_DE_VIAGEM_CARTAO_PATH: /api/cartoes/{id}/avisos
+        ASSOCIA_PAYPAL_CARTAO_URL: http://localhost:8888
+        ASSOCIA_PAYPAL_CARTAO_PATH: /api/cartoes/{id}/carteiras
 
 volumes:
   grafana-volume:
