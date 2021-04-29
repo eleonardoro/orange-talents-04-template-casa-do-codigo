@@ -1,4 +1,4 @@
-package br.com.zup.proposta.cartao.criacaodocartao.vencimento;
+package br.com.zup.proposta.cartao.vencimento;
 
 import java.time.LocalDateTime;
 

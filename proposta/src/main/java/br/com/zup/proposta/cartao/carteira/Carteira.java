@@ -1,4 +1,4 @@
-package br.com.zup.proposta.cartao.criacaodocartao.carteira;
+package br.com.zup.proposta.cartao.carteira;
 
 import java.time.LocalDateTime;
 

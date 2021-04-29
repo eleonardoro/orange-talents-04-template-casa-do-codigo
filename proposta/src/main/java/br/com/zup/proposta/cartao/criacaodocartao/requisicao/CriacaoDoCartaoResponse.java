@@ -1,4 +1,4 @@
-package br.com.zup.proposta.cartao.criacaodocartao;
+package br.com.zup.proposta.cartao.criacaodocartao.requisicao;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +8,7 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.PositiveOrZero;
 
 import br.com.zup.proposta.cartao.Cartao;
-import br.com.zup.proposta.cartao.criacaodocartao.vencimento.VencimentoResponse;
+import br.com.zup.proposta.cartao.vencimento.VencimentoResponse;
 import br.com.zup.proposta.criacaodaproposta.Proposta;
 import br.com.zup.proposta.validacoes.ExisteId;
 
@@ -51,11 +51,11 @@ public class CriacaoDoCartaoResponse {
 				+ ", titular=" + titular + ", limite=" + limite + ", vencimento=" + vencimentoResponse + "]";
 	}
 
-	Cartao converterParaCartao(Proposta proposta) {
+	public Cartao converterParaCartao(Proposta proposta) {
 		return new Cartao(id, emitidoEm, titular, limite, proposta);
 	}
 
-	VencimentoResponse getVencimentoResponse() {
+	public VencimentoResponse getVencimentoResponse() {
 		return vencimentoResponse;
 	}
 

@@ -1,4 +1,4 @@
-package br.com.zup.proposta.cartao.criacaodocartao.renegociacao;
+package br.com.zup.proposta.cartao.vencimento;
 
 import java.time.LocalDateTime;
 
@@ -10,16 +10,13 @@ import javax.persistence.ManyToOne;
 import br.com.zup.proposta.cartao.Cartao;
 
 @Entity
-public class Renegociacao {
+public class Vencimento {
 
 	@Id
 	private String id;
 
 	@Column(nullable = false)
-	private Integer quantidade;
-
-	@Column(nullable = false)
-	private Integer valor;
+	private Integer dia;
 
 	@Column(nullable = false)
 	private LocalDateTime dataDeCriacao;
@@ -28,21 +25,25 @@ public class Renegociacao {
 	private Cartao cartao;
 
 	@Deprecated
-	public Renegociacao() {
+	public Vencimento() {
 	}
 
-	public Renegociacao(String id, Integer quantidade, Integer valor, LocalDateTime dataDeCriacao, Cartao cartao) {
+	public Vencimento(String id, Integer dia, LocalDateTime dataDeCriacao) {
 		this.id = id;
-		this.quantidade = quantidade;
-		this.valor = valor;
+		this.dia = dia;
+		this.dataDeCriacao = dataDeCriacao;
+	}
+
+	public Vencimento(String id, Integer dia, LocalDateTime dataDeCriacao, Cartao cartao) {
+		this.id = id;
+		this.dia = dia;
 		this.dataDeCriacao = dataDeCriacao;
 		this.cartao = cartao;
 	}
 
 	@Override
 	public String toString() {
-		return "Renegociacao [id=" + id + ", quantidade=" + quantidade + ", valor=" + valor + ", dataDeCriacao="
-				+ dataDeCriacao + "]";
+		return "Vencimento [id=" + id + ", dia=" + dia + ", dataDeCriacao=" + dataDeCriacao + "]";
 	}
 
 }

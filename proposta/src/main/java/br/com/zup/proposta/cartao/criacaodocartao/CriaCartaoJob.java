@@ -8,9 +8,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.cartao.CartaoRespository;
-import br.com.zup.proposta.cartao.criacaodocartao.vencimento.Vencimento;
-import br.com.zup.proposta.cartao.criacaodocartao.vencimento.VencimentoRepository;
-import br.com.zup.proposta.cartao.criacaodocartao.vencimento.VencimentoResponse;
+import br.com.zup.proposta.cartao.criacaodocartao.requisicao.CriacaoDoCartaoFeignClient;
+import br.com.zup.proposta.cartao.criacaodocartao.requisicao.CriacaoDoCartaoRequest;
+import br.com.zup.proposta.cartao.criacaodocartao.requisicao.CriacaoDoCartaoResponse;
+import br.com.zup.proposta.cartao.vencimento.Vencimento;
+import br.com.zup.proposta.cartao.vencimento.VencimentoRepository;
+import br.com.zup.proposta.cartao.vencimento.VencimentoResponse;
 import br.com.zup.proposta.criacaodaproposta.EstadoDaProposta;
 import br.com.zup.proposta.criacaodaproposta.Proposta;
 import br.com.zup.proposta.criacaodaproposta.PropostaRepository;
