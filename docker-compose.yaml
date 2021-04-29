@@ -159,7 +159,7 @@ services:
         POSTGRES_PASSWORD: password
         ANALISE_PROPOSTA_URL: http://analise:9999
         ANALISE_PROPOSTA_PATH: /api/solicitacao
-        BLOQUEIO_CARTAO_URL: http://localhost:8888
+        BLOQUEIO_CARTAO_URL: http://contas:8888
         BLOQUEIO_CARTAO_PATH: /api/cartoes/{id}/bloqueios
         ANALISE_PROPOSTA_PATH_HEALTHCHECK: /actuator/health
         CRIACAO_DO_CARTAO_URL: http://contas:8888
@@ -169,6 +169,8 @@ services:
         KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/cartaoproposta/protocol/openid-connect/certs
         NOME_DA_APLICACAO: ServicoDeProposta
         AMBIENTE: Desenvolvimento
+        AVISO_DE_VIAGEM_CARTAO_URL: http://contas:8888
+        AVISO_DE_VIAGEM_CARTAO_PATH: /api/cartoes/{id}/avisos
 
 volumes:
   grafana-volume:

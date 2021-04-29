@@ -16,6 +16,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.cartao.CartaoRespository;
+import br.com.zup.proposta.cartao.avisodeviagem.requisicao.SolicitacaoDeAvisoFeignClient;
+import br.com.zup.proposta.cartao.avisodeviagem.requisicao.SolicitacaoDeAvisoRequest;
 
 @RestController
 @RequestMapping("/cartoes/avisodeviagem")
@@ -23,11 +25,13 @@ public class AvisoDeViagemController {
 
 	CartaoRespository cartaoRespository;
 	AvisoDeViagemRepository avisoDeViagemRepository;
+	SolicitacaoDeAvisoFeignClient solicitacaoDeAvisoFeignClient;
 
-	public AvisoDeViagemController(CartaoRespository cartaoRespository,
-			AvisoDeViagemRepository avisoDeViagemRepository) {
+	public AvisoDeViagemController(CartaoRespository cartaoRespository, AvisoDeViagemRepository avisoDeViagemRepository,
+			SolicitacaoDeAvisoFeignClient solicitacaoDeAvisoFeignClient) {
 		this.cartaoRespository = cartaoRespository;
 		this.avisoDeViagemRepository = avisoDeViagemRepository;
+		this.solicitacaoDeAvisoFeignClient = solicitacaoDeAvisoFeignClient;
 	}
 
 	@PostMapping(value = "/{id}")
@@ -40,12 +44,22 @@ public class AvisoDeViagemController {
 
 		if (!cartao.isPresent())
 			return ResponseEntity.notFound().build();
+		try {
 
-		AvisoDeViagem avisoDeViagem = avisoDeViagemRequest.converterParaAvisoDeViagem(cartao.get(), userAgent,
-				request.getRemoteAddr());
+			solicitacaoDeAvisoFeignClient.criaAvisoDeViagem(new SolicitacaoDeAvisoRequest(
+					avisoDeViagemRequest.getDestino(), avisoDeViagemRequest.getValidoAte()), idCartao);
 
-		avisoDeViagemRepository.save(avisoDeViagem);
+			AvisoDeViagem avisoDeViagem = avisoDeViagemRequest.converterParaAvisoDeViagem(cartao.get(), userAgent,
+					request.getRemoteAddr());
 
-		return ResponseEntity.ok().build();
+			avisoDeViagemRepository.save(avisoDeViagem);
+
+			return ResponseEntity.ok().build();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(
+					"{erro: Aconteceu algum erro ao bloquear o cartão no sistema legado. Tente novamente em instantes.}");
+		}
 	}
 }

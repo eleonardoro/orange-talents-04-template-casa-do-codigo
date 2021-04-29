@@ -26,4 +26,12 @@ public class AvisoDeViagemRequest {
 	public AvisoDeViagem converterParaAvisoDeViagem(Cartao cartao, String userAgent, String ip) {
 		return new AvisoDeViagem(validoAte, destino, cartao, ip, userAgent);
 	}
+
+	public String getDestino() {
+		return destino;
+	}
+
+	public LocalDate getValidoAte() {
+		return validoAte;
+	}
 }
