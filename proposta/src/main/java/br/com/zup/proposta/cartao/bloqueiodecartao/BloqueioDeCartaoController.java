@@ -50,10 +50,12 @@ public class BloqueioDeCartaoController {
 		try {
 			solicitacaoDeBloqueioFeignClient.solicitaBloqueio(new SolicitacaoDeBloqueioRequest(userAgent), idCartao);
 
-			cartao.get().bloqueiaCartao();
-			cartaoRespository.save(cartao.get());
+			Cartao cartaoAux = cartao.get();
+			
+			cartaoAux.bloqueiaCartao();
+			cartaoRespository.save(cartaoAux);
 
-			bloqueioDeCartaoRepository.save(new BloqueioDeCartao(request.getRemoteAddr(), userAgent, cartao.get()));
+			bloqueioDeCartaoRepository.save(new BloqueioDeCartao(request.getRemoteAddr(), userAgent, cartaoAux));
 
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {

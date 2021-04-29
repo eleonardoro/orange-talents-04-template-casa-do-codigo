@@ -17,14 +17,17 @@ public class BloqueioDeCartao {
 	private UUID id = UUID.randomUUID();
 
 	@Column(nullable = false, updatable = false)
-	private LocalDateTime instanteDeBloqueio = LocalDateTime.now();
+	private LocalDateTime bloqueadoEm = LocalDateTime.now();
 
 	@Column(nullable = false, updatable = false)
 	private String ip;
 
 	@Column(nullable = false, updatable = false)
-	private String userAgent;
-	
+	private String sistemaResponsavel;
+
+	@Column(nullable = false)
+	private boolean ativo = true;
+
 	@ManyToOne
 	private Cartao cartao;
 
@@ -32,9 +35,9 @@ public class BloqueioDeCartao {
 	public BloqueioDeCartao() {
 	}
 
-	public BloqueioDeCartao(String ip, String userAgent, Cartao cartao) {
+	public BloqueioDeCartao(String ip, String sistemaResponsavel, Cartao cartao) {
 		this.ip = ip;
-		this.userAgent = userAgent;
+		this.sistemaResponsavel = sistemaResponsavel;
 		this.cartao = cartao;
 	}
 
