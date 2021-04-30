@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Type;
+import org.springframework.security.crypto.encrypt.Encryptors;
 
 import br.com.zup.proposta.cartao.Cartao;
 
@@ -42,7 +43,7 @@ public class Proposta {
 
 	@Enumerated(EnumType.STRING)
 	private EstadoDaProposta estadoDaProposta;
-	
+
 	@Column(nullable = false, updatable = false)
 	private final LocalDateTime dataCriacao = LocalDateTime.now();
 
@@ -50,8 +51,9 @@ public class Proposta {
 	public Proposta() {
 	}
 
-	public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario) {
-		this.documento = documento;
+	public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario, String password,
+			String salt) {
+		this.documento = Encryptors.text(password, salt).encrypt(documento);
 		this.email = email;
 		this.nome = nome;
 		this.endereco = endereco;

@@ -20,7 +20,7 @@ public class AcompanhaPropostaResponse {
 	public AcompanhaPropostaResponse(Proposta proposta) {
 		this.id = proposta.getId();
 		this.documento = proposta.getDocumento();
-		this.email = proposta.getDocumento();
+		this.email = proposta.getEmail();
 		this.nome = proposta.getNome();
 		this.endereco = proposta.getEndereco();
 		this.salario = proposta.getSalario();

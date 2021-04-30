@@ -2,6 +2,7 @@ package br.com.zup.proposta.criacaodaproposta;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,12 @@ class CriaPropostaController {
 	private PropostaRepository propostaRepository;
 	private SolicitacaoDeAnaliseFeignClient solicitacaoDeAnaliseClient;
 	private Tracer tracer;
+	
+	@Value("${myapplication.encrypt.salt}")
+	private String password;
+	
+	@Value("${myapplication.encrypt.password}")
+	private String salt;
 
 	public CriaPropostaController(PropostaRepository propostaRepository,
 			SolicitacaoDeAnaliseFeignClient solicitacaoDeAnaliseClient, Tracer tracer) {
@@ -36,7 +43,7 @@ class CriaPropostaController {
 		Span activeSpan = tracer.activeSpan();
 		activeSpan.setTag("user.email", criaPropostaRequest.getEmail());
 
-		Proposta proposta = criaPropostaRequest.converterParaProposta();
+		Proposta proposta = criaPropostaRequest.converterParaProposta(password, salt);
 		try {
 			SolicitacaoDeAnaliseResponse resultadoAnalise = solicitacaoDeAnaliseClient
 					.solicitaAnalise(new SolicitacaoDeAnaliseRequest(proposta));

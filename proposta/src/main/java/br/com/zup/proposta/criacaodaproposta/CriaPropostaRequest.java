@@ -40,8 +40,8 @@ class CriaPropostaRequest {
 		this.salario = salario;
 	}
 
-	Proposta converterParaProposta() {
-		return new Proposta(documento, email, nome, endereco, salario);
+	Proposta converterParaProposta(String password, String salt) {
+		return new Proposta(documento, email, nome, endereco, salario, password, salt);
 	}
 
 	public String getEmail() {
