@@ -3,7 +3,7 @@ package br.com.zup.proposta.cartao.associacateiradigital.requisicao;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-public class SolicitaAssociacaoPaypalRequest {
+public class SolicitaAssociacaoCarteiraDigitalRequest {
 
 	@NotEmpty
 	@Email
@@ -12,7 +12,7 @@ public class SolicitaAssociacaoPaypalRequest {
 	@NotEmpty
 	private String carteira;
 
-	public SolicitaAssociacaoPaypalRequest(@NotEmpty @Email String email, @NotEmpty String carteira) {
+	public SolicitaAssociacaoCarteiraDigitalRequest(@NotEmpty @Email String email, @NotEmpty String carteira) {
 		this.email = email;
 		this.carteira = carteira;
 	}

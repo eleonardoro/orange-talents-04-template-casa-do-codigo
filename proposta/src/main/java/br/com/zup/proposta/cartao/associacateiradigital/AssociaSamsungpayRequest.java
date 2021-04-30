@@ -10,25 +10,25 @@ import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.cartao.associacateiradigital.carteira.AssociacaoDeCartaoEmCarteiraDigital;
 import br.com.zup.proposta.cartao.associacateiradigital.requisicao.SolicitaAssociacaoCarteiraDigitalRequest;
 
-public class AssociaPaypalRequest implements AssociaCarteiraRequest {
+public class AssociaSamsungpayRequest implements AssociaCarteiraRequest {
 
 	@NotEmpty
 	@Email
 	private String email;
 
 	@JsonCreator
-	public AssociaPaypalRequest(@NotEmpty @Email @JsonProperty("email") String email) {
+	public AssociaSamsungpayRequest(@NotEmpty @Email @JsonProperty("email") String email) {
 		this.email = email;
 	}
 
 	@Override
 	public SolicitaAssociacaoCarteiraDigitalRequest converterParaSolicitaAssociacaoCarteiraDigitalRequest() {
-		return new SolicitaAssociacaoCarteiraDigitalRequest("email", CarteirasDigitais.PAYPAL.toString());
+		return new SolicitaAssociacaoCarteiraDigitalRequest("email", CarteirasDigitais.SAMSUNGPAY.toString());
 	}
 
 	@Override
 	public AssociacaoDeCartaoEmCarteiraDigital converterParaAssociacaoDeCartaoEmCarteiraDigital(String userAgent,
 			Cartao cartao) {
-		return new AssociacaoDeCartaoEmCarteiraDigital(email, userAgent, cartao, CarteirasDigitais.PAYPAL);
+		return new AssociacaoDeCartaoEmCarteiraDigital(email, userAgent, cartao, CarteirasDigitais.SAMSUNGPAY);
 	}
 }

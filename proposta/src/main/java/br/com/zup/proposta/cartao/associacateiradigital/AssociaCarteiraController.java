@@ -1,6 +1,5 @@
 package br.com.zup.proposta.cartao.associacateiradigital;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -18,51 +17,69 @@ import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.cartao.CartaoRespository;
 import br.com.zup.proposta.cartao.associacateiradigital.carteira.AssociacaoDeCartaoEmCarteiraDigital;
 import br.com.zup.proposta.cartao.associacateiradigital.carteira.AssociacaoDeCartaoEmCarteiraDigitalRepository;
-import br.com.zup.proposta.cartao.associacateiradigital.requisicao.SolicitaAssociacaoPaypalFeignClient;
-import br.com.zup.proposta.cartao.associacateiradigital.requisicao.SolicitaAssociacaoPaypalRequest;
+import br.com.zup.proposta.cartao.associacateiradigital.requisicao.SolicitaAssociacaoCarteiraDigitalFeignClient;
+import br.com.zup.proposta.cartao.associacateiradigital.requisicao.SolicitaAssociacaoCarteiraDigitalRequest;
 
 @RestController
 @RequestMapping("/cartoes/associacarteiradigital")
-public class AssociaPaypalController {
+public class AssociaCarteiraController {
 
 	AssociacaoDeCartaoEmCarteiraDigitalRepository associacaoDeCartaoEmCarteiraDigitalRepository;
-	SolicitaAssociacaoPaypalFeignClient associaPaypalFeignClient;
+	SolicitaAssociacaoCarteiraDigitalFeignClient associaPaypalFeignClient;
 	CartaoRespository cartaoRespository;
 
-	public AssociaPaypalController(
+	public AssociaCarteiraController(
 			AssociacaoDeCartaoEmCarteiraDigitalRepository associacaoDeCartaoEmCarteiraDigitalRepository,
-			SolicitaAssociacaoPaypalFeignClient associaPaypalFeignClient, CartaoRespository cartaoRespository) {
+			SolicitaAssociacaoCarteiraDigitalFeignClient associaPaypalFeignClient,
+			CartaoRespository cartaoRespository) {
 		this.associacaoDeCartaoEmCarteiraDigitalRepository = associacaoDeCartaoEmCarteiraDigitalRepository;
 		this.associaPaypalFeignClient = associaPaypalFeignClient;
 		this.cartaoRespository = cartaoRespository;
 	}
 
-	@PostMapping("/{id}")
-	public ResponseEntity<Object> associaEmCarteiraDigital(@PathVariable(value = "id", required = true) String idCartao,
+	@PostMapping("/paypal/{id}")
+	public ResponseEntity<Object> associaNaCarteiraDigitalPaypal(
+			@PathVariable(value = "id", required = true) String idCartao,
 			@RequestBody @Valid AssociaPaypalRequest associaPaypalRequest,
 			@RequestHeader(value = "User-Agent") String userAgent, UriComponentsBuilder uriComponentsBuilder) {
 
+		return cadastraCarteiraDigital(idCartao, associaPaypalRequest, userAgent, uriComponentsBuilder,
+				CarteirasDigitais.PAYPAL);
+	}
+
+	@PostMapping("/samsungpay/{id}")
+	public ResponseEntity<Object> associaNaCarteiraDigitalSamsungpay(
+			@PathVariable(value = "id", required = true) String idCartao,
+			@RequestBody @Valid AssociaSamsungpayRequest associaSamsungPayRequest,
+			@RequestHeader(value = "User-Agent") String userAgent, UriComponentsBuilder uriComponentsBuilder) {
+
+		return cadastraCarteiraDigital(idCartao, associaSamsungPayRequest, userAgent, uriComponentsBuilder,
+				CarteirasDigitais.SAMSUNGPAY);
+	}
+
+	private ResponseEntity<Object> cadastraCarteiraDigital(String idCartao,
+			AssociaCarteiraRequest associaCarteiraPayRequest, String userAgent,
+			UriComponentsBuilder uriComponentsBuilder, CarteirasDigitais carteira) {
 		Optional<Cartao> cartao = cartaoRespository.findById(idCartao);
 
 		if (!cartao.isPresent())
 			return ResponseEntity.notFound().build();
 
-		List<AssociacaoDeCartaoEmCarteiraDigital> cartaoAssociado = associacaoDeCartaoEmCarteiraDigitalRepository
-				.findByCartao_IdAndCarteira(idCartao, CarteirasDigitais.PAYPAL);
-		if (!cartaoAssociado.isEmpty())
+		if (!associacaoDeCartaoEmCarteiraDigitalRepository.findByCartao_IdAndCarteira(idCartao, carteira).isEmpty())
 			return ResponseEntity.unprocessableEntity().build();
 
 		try {
-			SolicitaAssociacaoPaypalRequest solicitaAssociacaoPaypalRequest = associaPaypalRequest
-					.converterParaSolicitaAssociacaoPaypalRequest();
+			SolicitaAssociacaoCarteiraDigitalRequest solicitaAssociacaoPaypalRequest = associaCarteiraPayRequest
+					.converterParaSolicitaAssociacaoCarteiraDigitalRequest();
 			associaPaypalFeignClient.associaPaypal(solicitaAssociacaoPaypalRequest, idCartao);
 
-			AssociacaoDeCartaoEmCarteiraDigital associacaoDeCartaoEmCarteiraDigital = associaPaypalRequest
+			AssociacaoDeCartaoEmCarteiraDigital associacaoDeCartaoEmCarteiraDigital = associaCarteiraPayRequest
 					.converterParaAssociacaoDeCartaoEmCarteiraDigital(userAgent, cartao.get());
 
 			associacaoDeCartaoEmCarteiraDigitalRepository.save(associacaoDeCartaoEmCarteiraDigital);
 
-			return ResponseEntity.created(uriComponentsBuilder.path("/cartoes/associacarteiradigital/{id}")
+			return ResponseEntity.created(uriComponentsBuilder
+					.path("/cartoes/associacarteiradigital/" + carteira.toString().toLowerCase() + "/{id}")
 					.buildAndExpand(associacaoDeCartaoEmCarteiraDigital.getId()).toUri()).build();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
