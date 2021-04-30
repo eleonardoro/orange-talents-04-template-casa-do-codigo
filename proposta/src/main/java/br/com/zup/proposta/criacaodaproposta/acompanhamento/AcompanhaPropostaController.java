@@ -11,21 +11,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.zup.proposta.criacaodaproposta.Proposta;
 import br.com.zup.proposta.criacaodaproposta.PropostaRepository;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @RestController
 @RequestMapping("/propostas")
 public class AcompanhaPropostaController {
 
 	PropostaRepository propostaRepository;
+	private Tracer tracer;
 
-	public AcompanhaPropostaController(PropostaRepository propostaRepository) {
+	public AcompanhaPropostaController(PropostaRepository propostaRepository, Tracer tracer) {
 		this.propostaRepository = propostaRepository;
+		this.tracer = tracer;
 	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<AcompanhaPropostaResponse> detalhesDoProduto(
-			@PathVariable(value = "id", required = true) String idProduto) {
-		Optional<Proposta> proposta = propostaRepository.findById(UUID.fromString(idProduto));
+			@PathVariable(value = "id", required = true) String idProposta) {
+		
+		Span activeSpan = tracer.activeSpan();
+		activeSpan.setTag("proposal.id", idProposta);
+		
+		Optional<Proposta> proposta = propostaRepository.findById(UUID.fromString(idProposta));
 
 		if (!proposta.isPresent())
 			return ResponseEntity.notFound().build();

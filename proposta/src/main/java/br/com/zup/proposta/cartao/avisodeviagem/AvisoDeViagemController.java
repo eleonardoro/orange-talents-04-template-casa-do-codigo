@@ -18,6 +18,8 @@ import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.cartao.CartaoRespository;
 import br.com.zup.proposta.cartao.avisodeviagem.requisicao.SolicitacaoDeAvisoFeignClient;
 import br.com.zup.proposta.cartao.avisodeviagem.requisicao.SolicitacaoDeAvisoRequest;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @RestController
 @RequestMapping("/cartoes/avisodeviagem")
@@ -26,12 +28,14 @@ public class AvisoDeViagemController {
 	CartaoRespository cartaoRespository;
 	AvisoDeViagemRepository avisoDeViagemRepository;
 	SolicitacaoDeAvisoFeignClient solicitacaoDeAvisoFeignClient;
+	private Tracer tracer;
 
 	public AvisoDeViagemController(CartaoRespository cartaoRespository, AvisoDeViagemRepository avisoDeViagemRepository,
-			SolicitacaoDeAvisoFeignClient solicitacaoDeAvisoFeignClient) {
+			SolicitacaoDeAvisoFeignClient solicitacaoDeAvisoFeignClient, Tracer tracer) {
 		this.cartaoRespository = cartaoRespository;
 		this.avisoDeViagemRepository = avisoDeViagemRepository;
 		this.solicitacaoDeAvisoFeignClient = solicitacaoDeAvisoFeignClient;
+		this.tracer = tracer;
 	}
 
 	@PostMapping(value = "/{id}")
@@ -39,6 +43,9 @@ public class AvisoDeViagemController {
 			UriComponentsBuilder uriComponentsBuilder, HttpServletRequest request,
 			@RequestHeader(value = "User-Agent") String userAgent,
 			@Valid @RequestBody AvisoDeViagemRequest avisoDeViagemRequest) {
+		
+		Span activeSpan = tracer.activeSpan();
+		activeSpan.setTag("card.id", idCartao);
 
 		Optional<Cartao> cartao = cartaoRespository.findById(idCartao);
 

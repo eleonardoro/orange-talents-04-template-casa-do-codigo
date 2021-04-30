@@ -14,6 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.cartao.CartaoRespository;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @RestController
 @RequestMapping("/cartoes/biometria")
@@ -21,17 +23,22 @@ public class CadastroDaBiometriaController {
 
 	CartaoRespository cartaoRespository;
 	BiometriaRepository biometriaRepository;
+	private Tracer tracer;
 
-	public CadastroDaBiometriaController(CartaoRespository cartaoRespository, BiometriaRepository biometriaRepository) {
+	public CadastroDaBiometriaController(CartaoRespository cartaoRespository, BiometriaRepository biometriaRepository,
+			Tracer tracer) {
 		this.cartaoRespository = cartaoRespository;
 		this.biometriaRepository = biometriaRepository;
+		this.tracer = tracer;
 	}
 
 	@PostMapping(value = "/{id}")
-	public ResponseEntity<Object> detalhesDoProduto(
-			@PathVariable(value = "id", required = true) String idCartao,
+	public ResponseEntity<Object> detalhesDoProduto(@PathVariable(value = "id", required = true) String idCartao,
 			@Valid @RequestBody CadastroDaBiometriaRequest cadastroDaBiometriaRequest,
 			UriComponentsBuilder uriComponentsBuilder) {
+		
+		Span activeSpan = tracer.activeSpan();
+		activeSpan.setTag("card.id", idCartao);
 
 		Optional<Cartao> cartao = cartaoRespository.findById(idCartao);
 
@@ -42,7 +49,7 @@ public class CadastroDaBiometriaController {
 		biometriaRepository.save(biometria);
 
 		return ResponseEntity
-				.created(uriComponentsBuilder.path("/cartoes/biometria/{id}")
-				.buildAndExpand(biometria.getId()).toUri()).build();
+				.created(uriComponentsBuilder.path("/cartoes/biometria/{id}").buildAndExpand(biometria.getId()).toUri())
+				.build();
 	}
 }

@@ -19,6 +19,8 @@ import br.com.zup.proposta.cartao.associacateiradigital.carteira.AssociacaoDeCar
 import br.com.zup.proposta.cartao.associacateiradigital.carteira.AssociacaoDeCartaoEmCarteiraDigitalRepository;
 import br.com.zup.proposta.cartao.associacateiradigital.requisicao.SolicitaAssociacaoCarteiraDigitalFeignClient;
 import br.com.zup.proposta.cartao.associacateiradigital.requisicao.SolicitaAssociacaoCarteiraDigitalRequest;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @RestController
 @RequestMapping("/cartoes/associacarteiradigital")
@@ -27,14 +29,16 @@ public class AssociaCarteiraController {
 	AssociacaoDeCartaoEmCarteiraDigitalRepository associacaoDeCartaoEmCarteiraDigitalRepository;
 	SolicitaAssociacaoCarteiraDigitalFeignClient associaPaypalFeignClient;
 	CartaoRespository cartaoRespository;
+	private Tracer tracer;
 
 	public AssociaCarteiraController(
 			AssociacaoDeCartaoEmCarteiraDigitalRepository associacaoDeCartaoEmCarteiraDigitalRepository,
-			SolicitaAssociacaoCarteiraDigitalFeignClient associaPaypalFeignClient,
-			CartaoRespository cartaoRespository) {
+			SolicitaAssociacaoCarteiraDigitalFeignClient associaPaypalFeignClient, CartaoRespository cartaoRespository,
+			Tracer tracer) {
 		this.associacaoDeCartaoEmCarteiraDigitalRepository = associacaoDeCartaoEmCarteiraDigitalRepository;
 		this.associaPaypalFeignClient = associaPaypalFeignClient;
 		this.cartaoRespository = cartaoRespository;
+		this.tracer = tracer;
 	}
 
 	@PostMapping("/paypal/{id}")
@@ -42,6 +46,9 @@ public class AssociaCarteiraController {
 			@PathVariable(value = "id", required = true) String idCartao,
 			@RequestBody @Valid AssociaPaypalRequest associaPaypalRequest,
 			@RequestHeader(value = "User-Agent") String userAgent, UriComponentsBuilder uriComponentsBuilder) {
+
+		Span activeSpan = tracer.activeSpan();
+		activeSpan.setTag("card.id", idCartao);
 
 		return cadastraCarteiraDigital(idCartao, associaPaypalRequest, userAgent, uriComponentsBuilder,
 				CarteirasDigitais.PAYPAL);
@@ -52,6 +59,9 @@ public class AssociaCarteiraController {
 			@PathVariable(value = "id", required = true) String idCartao,
 			@RequestBody @Valid AssociaSamsungpayRequest associaSamsungPayRequest,
 			@RequestHeader(value = "User-Agent") String userAgent, UriComponentsBuilder uriComponentsBuilder) {
+
+		Span activeSpan = tracer.activeSpan();
+		activeSpan.setTag("card.id", idCartao);
 
 		return cadastraCarteiraDigital(idCartao, associaSamsungPayRequest, userAgent, uriComponentsBuilder,
 				CarteirasDigitais.SAMSUNGPAY);

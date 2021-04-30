@@ -17,6 +17,8 @@ import br.com.zup.proposta.cartao.vencimento.VencimentoResponse;
 import br.com.zup.proposta.criacaodaproposta.EstadoDaProposta;
 import br.com.zup.proposta.criacaodaproposta.Proposta;
 import br.com.zup.proposta.criacaodaproposta.PropostaRepository;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @Configuration
 @EnableScheduling
@@ -26,25 +28,32 @@ public class CriaCartaoJob {
 	CartaoRespository cartaoRepository;
 	VencimentoRepository vencimentoRepository;
 	CriacaoDoCartaoFeignClient criacaoDoCartaoFeignClient;
+	Tracer tracer;
 
 	public CriaCartaoJob(PropostaRepository propostaRepository, CartaoRespository cartaoRepository,
-			VencimentoRepository vencimentoRepository, CriacaoDoCartaoFeignClient criacaoDoCartaoFeignClient) {
+			VencimentoRepository vencimentoRepository, CriacaoDoCartaoFeignClient criacaoDoCartaoFeignClient,
+			Tracer tracer) {
 		this.propostaRepository = propostaRepository;
 		this.cartaoRepository = cartaoRepository;
 		this.vencimentoRepository = vencimentoRepository;
 		this.criacaoDoCartaoFeignClient = criacaoDoCartaoFeignClient;
+		this.tracer = tracer;
 	}
 
-	@Scheduled(fixedDelayString =  "${cartao.solicitacao.delay}")
+	@Scheduled(fixedDelayString = "${cartao.solicitacao.delay}")
 	public void solicitaCartoesParaPropostasNoEstadoElegivel() {
 		List<Proposta> propostas = propostaRepository
 				.findByEstadoDaPropostaIn(List.of(EstadoDaProposta.ELEGIVEL, EstadoDaProposta.CARTAO_SOLICITADO));
 
+		Span activeSpan = tracer.activeSpan();
+
 		for (Proposta proposta : propostas) {
+			CriacaoDoCartaoRequest requisita = new CriacaoDoCartaoRequest(proposta);
+			activeSpan.setTag("user.documento", requisita.getDocumento());
+			activeSpan.setBaggageItem("user.nome", requisita.getNome());
 
 			try {
-				CriacaoDoCartaoResponse criacaoDoCartaoResponse = criacaoDoCartaoFeignClient
-						.solicitaCartao(new CriacaoDoCartaoRequest(proposta));
+				CriacaoDoCartaoResponse criacaoDoCartaoResponse = criacaoDoCartaoFeignClient.solicitaCartao(requisita);
 
 				Cartao cartao = cartaoRepository.save(criacaoDoCartaoResponse.converterParaCartao(proposta));
 

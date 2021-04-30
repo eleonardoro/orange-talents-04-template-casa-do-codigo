@@ -44,4 +44,8 @@ class CriaPropostaRequest {
 		return new Proposta(documento, email, nome, endereco, salario);
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
 }

@@ -173,6 +173,11 @@ services:
         AVISO_DE_VIAGEM_CARTAO_PATH: /api/cartoes/{id}/avisos
         ASSOCIA_CARTEIRA_DIGITAL_CARTAO_URL:http: http://contas:8888
         ASSOCIA_CARTEIRA_DIGITAL_CARTAO_PATH: /api/cartoes/{id}/carteiras
+        JAEGER_ENABLED: "true"
+        JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+        JAEGER_SAMPLER_PROBABILISTIC: 1
+        JAEGER_SAMPLER_RATE_LIMIT: 10
+        JAEGER_SAMPLER_CONSTANT: "true"
 
 volumes:
   grafana-volume:

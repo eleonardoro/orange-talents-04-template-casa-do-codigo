@@ -12,6 +12,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseFeignClient;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseRequest;
 import br.com.zup.proposta.criacaodaproposta.analise.SolicitacaoDeAnaliseResponse;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @RestController
 @RequestMapping("/propostas")
@@ -19,16 +21,21 @@ class CriaPropostaController {
 
 	private PropostaRepository propostaRepository;
 	private SolicitacaoDeAnaliseFeignClient solicitacaoDeAnaliseClient;
+	private Tracer tracer;
 
 	public CriaPropostaController(PropostaRepository propostaRepository,
-			SolicitacaoDeAnaliseFeignClient solicitacaoDeAnaliseClient) {
+			SolicitacaoDeAnaliseFeignClient solicitacaoDeAnaliseClient, Tracer tracer) {
 		this.propostaRepository = propostaRepository;
 		this.solicitacaoDeAnaliseClient = solicitacaoDeAnaliseClient;
+		this.tracer = tracer;
 	}
 
 	@PostMapping
 	public ResponseEntity<CriaPropostaResponse> criaProposta(
 			@Valid @RequestBody CriaPropostaRequest criaPropostaRequest, UriComponentsBuilder uriComponentsBuilder) {
+		Span activeSpan = tracer.activeSpan();
+		activeSpan.setTag("user.email", criaPropostaRequest.getEmail());
+
 		Proposta proposta = criaPropostaRequest.converterParaProposta();
 		try {
 			SolicitacaoDeAnaliseResponse resultadoAnalise = solicitacaoDeAnaliseClient

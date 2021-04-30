@@ -18,6 +18,8 @@ import br.com.zup.proposta.cartao.CartaoRespository;
 import br.com.zup.proposta.cartao.SituacaoDoCartao;
 import br.com.zup.proposta.cartao.bloqueiodecartao.requisicao.SolicitacaoDeBloqueioFeignClient;
 import br.com.zup.proposta.cartao.bloqueiodecartao.requisicao.SolicitacaoDeBloqueioRequest;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @RestController
 @RequestMapping("/cartoes/bloqueio")
@@ -26,18 +28,24 @@ public class BloqueioDeCartaoController {
 	BloqueioDeCartaoRepository bloqueioDeCartaoRepository;
 	CartaoRespository cartaoRespository;
 	SolicitacaoDeBloqueioFeignClient solicitacaoDeBloqueioFeignClient;
+	private Tracer tracer;
 
 	public BloqueioDeCartaoController(BloqueioDeCartaoRepository bloqueioDeCartaoRepository,
-			CartaoRespository cartaoRespository, SolicitacaoDeBloqueioFeignClient solicitacaoDeBloqueioFeignClient) {
+			CartaoRespository cartaoRespository, SolicitacaoDeBloqueioFeignClient solicitacaoDeBloqueioFeignClient,
+			Tracer tracer) {
 		this.bloqueioDeCartaoRepository = bloqueioDeCartaoRepository;
 		this.cartaoRespository = cartaoRespository;
 		this.solicitacaoDeBloqueioFeignClient = solicitacaoDeBloqueioFeignClient;
+		this.tracer = tracer;
 	}
 
 	@PostMapping(value = "/{id}")
 	public ResponseEntity<Object> bloqueiaCartao(@PathVariable(value = "id", required = true) String idCartao,
 			UriComponentsBuilder uriComponentsBuilder, HttpServletRequest request,
 			@RequestHeader(value = "User-Agent") String userAgent) {
+		
+		Span activeSpan = tracer.activeSpan();
+		activeSpan.setTag("card.id", idCartao);
 
 		Optional<Cartao> cartao = cartaoRespository.findById(idCartao);
 
@@ -51,7 +59,7 @@ public class BloqueioDeCartaoController {
 			solicitacaoDeBloqueioFeignClient.solicitaBloqueio(new SolicitacaoDeBloqueioRequest(userAgent), idCartao);
 
 			Cartao cartaoAux = cartao.get();
-			
+
 			cartaoAux.bloqueiaCartao();
 			cartaoRespository.save(cartaoAux);
 
